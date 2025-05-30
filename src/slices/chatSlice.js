@@ -28,7 +28,7 @@ export const sendMessage = createAsyncThunk(
 
             const data = await response.json();
             console.log(data);
-            return data.reply;
+            return data.message;
         } catch (error) {
             return rejectWithValue(
                 error.message || 'Не удалось отправить сообщение'

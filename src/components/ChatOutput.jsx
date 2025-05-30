@@ -17,7 +17,7 @@ const Container = styled.div`
 function ChatOutput() {
     const chat = useSelector((state) => state.chat);
     const { messages } = chat;
-    console.log(chat);
+    console.log({ chat });
 
     return (
         <Container>
