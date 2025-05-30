@@ -18,7 +18,7 @@ export const sendMessage = createAsyncThunk(
                 headers: {
                     'Content-Type': 'application/json',
                 },
-                body: JSON.stringify({ message: userMessage }),
+                body: JSON.stringify({ text: userMessage }),
             });
 
             if (!response.ok) {
@@ -27,6 +27,7 @@ export const sendMessage = createAsyncThunk(
             }
 
             const data = await response.json();
+            console.log(data);
             return data.reply;
         } catch (error) {
             return rejectWithValue(

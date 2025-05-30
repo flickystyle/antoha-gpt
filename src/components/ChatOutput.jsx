@@ -22,7 +22,11 @@ function ChatOutput() {
     return (
         <Container>
             {messages.map((message) => (
-                <Message message={message.text} isUser={message.isUser} />
+                <Message
+                    message={message.text}
+                    isUser={message.isUser}
+                    key={message.id}
+                />
             ))}
             {chat.status === 'receiving' && <Spinner />}
         </Container>
