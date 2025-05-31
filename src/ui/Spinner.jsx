@@ -1,53 +1,50 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 
-const StyledSpinner = styled.div`
+const blink = keyframes`
+  0%, 100% { opacity: 0.2; }
+  50% { opacity: 1; }
+`;
+
+const SpinnerContainer = styled.div`
     display: flex;
-    justify-content: flex-start;
     align-items: center;
-    gap: 5px;
-    position: relative;
-    left: 30px;
-    top: 20px;
+    gap: 8px;
+    padding: 4px 0;
+`;
 
-    & span {
-        display: inline-block;
-        width: 8px;
-        height: 8px;
-        background-color: red;
-        border-radius: 50%;
-        animation: wave 1s infinite ease-in-out;
-    }
-    & span:nth-child(2) {
-        animation-delay: 0.3s;
-    }
+const TypingIndicator = styled.div`
+    display: flex;
+    align-items: center;
+    height: 20px;
+`;
 
-    & span:nth-child(3) {
-        animation-delay: 0.4s;
-    }
+const Dot = styled.span`
+    display: inline-block;
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: #666;
+    margin: 0 2px;
+    animation: ${blink} 1.4s infinite both;
+    animation-delay: ${(props) => props.delay};
+`;
 
-    @keyframes wave {
-        0%,
-        30%,
-        60%,
-        100%,
-        130%,
-        300% {
-            transform: translateY(0);
-        }
-
-        30% {
-            transform: translateY(-15px);
-        }
-    }
+const SpinnerText = styled.span`
+    color: #666;
+    font-size: 14px;
+    margin-left: 8px;
 `;
 
 function Spinner() {
     return (
-        <StyledSpinner>
-            <span></span>
-            <span></span>
-            <span></span>
-        </StyledSpinner>
+        <SpinnerContainer>
+            <TypingIndicator>
+                <Dot delay="0s" />
+                <Dot delay="0.2s" />
+                <Dot delay="0.4s" />
+            </TypingIndicator>
+            <SpinnerText>Печатает...</SpinnerText>
+        </SpinnerContainer>
     );
 }
 

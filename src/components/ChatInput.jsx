@@ -1,43 +1,125 @@
-import { useState } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { addUserMessage, sendMessage } from '../slices/chatSlice';
+import { HiArrowSmallUp } from 'react-icons/hi2';
 
-const Form = styled.form`
-    display: flex;
-    border: 2px solid red;
-    width: 40rem;
-    height: 7rem;
+const InputContainer = styled.div`
+    position: fixed;
+    bottom: 20px;
+    max-width: 800px;
+    width: 100%;
+    margin: 0 auto;
+    padding: 16px;
+    box-sizing: border-box;
 `;
 
-const Textarea = styled.textarea`
+const Form = styled.form`
+    width: 100%;
+`;
+
+const InputWrapper = styled.div`
+    display: flex;
+    align-items: center;
+    border-radius: 16px;
+    border: 2px solid #747070;
+    background-color: #f9f9f9;
+    padding: 8px 16px;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+
+    &:hover {
+        border-color: #dd1010;
+    }
+`;
+
+const StyledTextarea = styled.textarea`
+    flex: 1;
+    border: none;
+    background: transparent;
     resize: none;
-    margin: auto;
-    width: 80%;
+    outline: none;
+    font-size: 16px;
+    line-height: 1.5;
+    padding: 8px 0;
+    max-height: 200px;
+    font-family: inherit;
+
+    &::placeholder {
+        color: #9e9e9e;
+    }
+`;
+
+const Button = styled.button`
+    background: none;
+    border: 1px solid #a33030;
+    color: #a33030;
+    border-radius: 50%;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.5;
+        border: 1px solid gray;
+        color: gray;
+    }
+`;
+
+const FooterText = styled.p`
+    text-align: center;
+    font-size: 12px;
+    color: #9e9e9e;
+    margin-top: 12px;
 `;
 
 function ChatInput() {
     const [inputValue, setInputValue] = useState('');
+    const [isFocused, setIsFocused] = useState(false);
+    const textareaRef = useRef < HTMLTextAreaElement > null;
     const dispatch = useDispatch();
 
-    function handleSubmit(e) {
+    useEffect(() => {
+        if (textareaRef.current) {
+            textareaRef.current.style.height = 'auto';
+            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
+        }
+    }, [inputValue, textareaRef]);
+
+    const handleSubmit = (e) => {
         e.preventDefault();
         if (!inputValue.trim()) return;
         dispatch(addUserMessage(inputValue));
         dispatch(sendMessage(inputValue));
         setInputValue('');
-    }
+    };
 
     return (
-        <Form onSubmit={handleSubmit}>
-            <Textarea
-                type="text"
-                placeholder="Введите запрос"
-                value={inputValue}
-                onChange={(e) => setInputValue(e.target.value)}
-            />
-            <button type="submit">Submit</button>
-        </Form>
+        <InputContainer>
+            <Form onSubmit={handleSubmit}>
+                <InputWrapper $focused={isFocused}>
+                    <StyledTextarea
+                        ref={textareaRef}
+                        value={inputValue}
+                        onChange={(e) => setInputValue(e.target.value)}
+                        onFocus={() => setIsFocused(true)}
+                        onBlur={() => setIsFocused(false)}
+                        placeholder="Напишите что-нибудь..."
+                        rows={1}
+                    />
+                    <Button type="submit" disabled={!inputValue.trim()}>
+                        <HiArrowSmallUp size={20} />
+                    </Button>
+                </InputWrapper>
+            </Form>
+            <FooterText>
+                AntohaGPT может допускать ошибки. Проверяйте важную информацию.
+            </FooterText>
+        </InputContainer>
     );
 }
 

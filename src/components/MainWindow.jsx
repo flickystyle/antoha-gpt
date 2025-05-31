@@ -7,7 +7,6 @@ const Window = styled.div`
     align-items: center;
     gap: 1rem;
     margin: 15px;
-    border: 2px solid red;
     height: 95vh;
     border-radius: 1%;
 `;
