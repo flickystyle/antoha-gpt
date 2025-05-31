@@ -5,8 +5,6 @@ import { addUserMessage, sendMessage } from '../slices/chatSlice';
 import { HiArrowSmallUp } from 'react-icons/hi2';
 
 const InputContainer = styled.div`
-    position: fixed;
-    bottom: 20px;
     max-width: 800px;
     width: 100%;
     margin: 0 auto;
@@ -22,18 +20,21 @@ const InputWrapper = styled.div`
     display: flex;
     align-items: center;
     border-radius: 16px;
-    border: 2px solid #747070;
+    border: 2px solid #e0e0e0;
     background-color: #f9f9f9;
     padding: 8px 16px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
+    &:focus-within {
+        border-color: #cc0000;
+    }
     &:hover {
-        border-color: #dd1010;
+        border-color: #cc0000;
     }
 `;
 
-const StyledTextarea = styled.textarea`
+const StyledInput = styled.input`
     flex: 1;
     border: none;
     background: transparent;
@@ -52,8 +53,8 @@ const StyledTextarea = styled.textarea`
 
 const Button = styled.button`
     background: none;
-    border: 1px solid #a33030;
-    color: #a33030;
+    border: 1px solid #cc0000;
+    color: #cc0000;
     border-radius: 50%;
     cursor: pointer;
     padding: 8px;
@@ -102,13 +103,13 @@ function ChatInput() {
         <InputContainer>
             <Form onSubmit={handleSubmit}>
                 <InputWrapper $focused={isFocused}>
-                    <StyledTextarea
+                    <StyledInput
                         ref={textareaRef}
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        placeholder="Напишите что-нибудь..."
+                        placeholder="Задайте вопрос или напишите что-нибудь..."
                         rows={1}
                     />
                     <Button type="submit" disabled={!inputValue.trim()}>

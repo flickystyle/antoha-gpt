@@ -23,7 +23,7 @@ const Dot = styled.span`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #666;
+    background-color: #e8391a;
     margin: 0 2px;
     animation: ${blink} 1.4s infinite both;
     animation-delay: ${(props) => props.delay};

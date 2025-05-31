@@ -2,6 +2,7 @@ import styled from 'styled-components';
 import { FiThumbsUp, FiThumbsDown, FiCopy } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import Spinner from '../ui/Spinner';
+import TypewriterMessage from '../ui/TypewriterMessage';
 
 const MessagesContainer = styled.div`
     display: flex;
@@ -9,14 +10,13 @@ const MessagesContainer = styled.div`
     gap: 24px;
     width: 100%;
     overflow: auto;
-    max-width: 900px;
+    max-width: 70rem;
+    max-height: 50rem;
     margin: 0 auto;
     padding: 16px;
     box-sizing: border-box;
-
-    &::-webkit-scrollbar {
-        width: 0;
-    }
+    scrollbar-width: thin;
+    scrollbar-color: #8b000076 #f0f0f0;
 `;
 
 const MessageWrapper = styled.div`
@@ -26,19 +26,13 @@ const MessageWrapper = styled.div`
 
 const MessageBubble = styled.div`
     max-width: 85%;
-    padding: 16px;
+    margin: 0 7rem;
+    padding: 20px;
     border-radius: 16px;
-    background: ${({ $isUser }) => ($isUser ? '#f0f0f0' : '#f9f9f9')};
+    background: ${({ $isUser }) => ($isUser ? '#E0E0E0' : '#f9f9f9')};
     border: ${({ $isUser }) =>
         $isUser ? '1px solid #e0e0e0' : '1px solid #e0e0e0'};
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-`;
-
-const MessageContent = styled.div`
-    white-space: pre-wrap;
-    word-wrap: break-word;
-    line-height: 1.6;
-    font-size: 15px;
 `;
 
 const MessageFooter = styled.div`
@@ -79,13 +73,13 @@ const BaseButton = styled.button`
 
 const RateButton = styled(BaseButton)`
     &:hover {
-        color: #e8391a;
+        color: #cc0000;
     }
 `;
 
 const CopyButton = styled(BaseButton)`
     &:hover {
-        color: #ed9d09;
+        color: #8b0000e2;
     }
 `;
 
@@ -99,7 +93,7 @@ const ChatOutput = () => {
             {messages.map((message) => (
                 <MessageWrapper key={message.id} $isUser={message.isUser}>
                     <MessageBubble $isUser={message.isUser}>
-                        <MessageContent>{message.text}</MessageContent>
+                        <TypewriterMessage text={message.text} speed={10} />
                         {!message.isUser && (
                             <MessageFooter>
                                 <ActionButtons>

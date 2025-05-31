@@ -1,8 +1,12 @@
 import styled from 'styled-components';
 
 const Window = styled.div`
-    display: flex;
-    flex-direction: column;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5fr 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+
     justify-content: center;
     align-items: center;
     gap: 1rem;
