@@ -3,6 +3,8 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { addUserMessage, sendMessage } from '../slices/chatSlice';
 import { FiArrowUp, FiMic, FiPaperclip, FiMicOff } from 'react-icons/fi';
+import { RiSendPlaneFill } from 'react-icons/ri';
+import { GrSend } from "react-icons/gr";
 
 const InputContainer = styled.div`
     max-width: 800px;
@@ -21,16 +23,12 @@ const InputWrapper = styled.div`
     gap: 0.3rem;
     flex-direction: column;
     align-items: center;
-    border-radius: 16px;
+    border-radius: 30px;
     border: 1px solid #e0e0e0;
     background-color: rgb(198, 199, 205);
     padding: 8px 16px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
-
-    &:focus-within {
-        border-color: rgb(49, 51, 64);
-    }
 `;
 
 const StyledTextarea = styled.textarea`
@@ -49,8 +47,6 @@ const StyledTextarea = styled.textarea`
 
     &::placeholder {
         color: #838282;
-        position: absolute;
-        left: 1rem;
     }
 
     &::-webkit-scrollbar {
@@ -64,10 +60,9 @@ const ButtonGroup = styled.div`
 `;
 
 const Button = styled.button`
-    background-color: var(--color-red);
-    border: 1px solid var(--color-white);
-    color: var(--color-white);
-    border-radius: 50%;
+    color: var(--color-red);
+    background: none;
+    border: none;
     cursor: pointer;
     padding: 8px;
     margin-left: 8px;
@@ -75,13 +70,13 @@ const Button = styled.button`
     align-items: center;
     justify-content: center;
     transition: all 0.6s;
+    position: relative;
+    left: 8px;
 
     &:disabled {
         cursor: not-allowed;
         opacity: 0.3;
-        border: 1px solid var(--color-red);
-        color: var(--color-red);
-        background-color: var(--color-white);
+        color: var(--color-darkgray);
     }
 `;
 
@@ -94,14 +89,17 @@ const FakeButtonGroup = styled.div`
 const FakeButton = styled.button`
     color: var(--color-darkgray);
     border: none;
+    border-radius: 50%;
     background: none;
     cursor: pointer;
     padding: 2px;
-    margin-left: 8px;
+    margin-left: 2px;
     display: flex;
     align-items: center;
     justify-content: center;
     transition: all 0.6s;
+    position: relative;
+    left: -10px;
 
     &:disabled {
         cursor: not-allowed;
@@ -114,6 +112,36 @@ const FakeButton = styled.button`
         color: var(--color-red);
     }
 `;
+
+const FakeButton2 = styled.button`
+    color: var(--color-darkgray);
+    border: none;
+    border-radius: 50%;
+    background: none;
+    cursor: pointer;
+    padding: 2px;
+    margin-left: 2px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.6s;
+    position: relative;
+    /* left: 10px; */
+    transform: rotate(0.88turn);
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+        color: var(--color-darkgray);
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: var(--color-red);
+    }
+`;
+
+
 
 const GreetingText = styled.p`
     text-align: center;
@@ -185,20 +213,16 @@ function ChatInput() {
                     <ButtonGroup>
                         <FakeButtonGroup>
                             <FakeButton disabled={isDisabled}>
-                                {!isDisabled ? (
-                                    <FiMic size={25} />
-                                ) : (
-                                    <FiMicOff size={25} />
-                                )}
+                                <FiMic size={24} />
                             </FakeButton>
 
-                            <FakeButton type="file" disabled={isDisabled}>
-                                <FiPaperclip size={25} />
-                            </FakeButton>
+                            <FakeButton2 type="file" disabled={isDisabled}>
+                                <FiPaperclip size={23} />
+                            </FakeButton2>
                         </FakeButtonGroup>
 
                         <Button type="submit" disabled={!inputValue.trim()}>
-                            <FiArrowUp size={20} />
+                            <GrSend size={33} />
                         </Button>
                     </ButtonGroup>
                 </InputWrapper>

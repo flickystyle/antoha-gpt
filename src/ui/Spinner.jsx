@@ -1,5 +1,6 @@
 import styled, { keyframes } from 'styled-components';
 
+
 const blink = keyframes`
   0%, 100% { opacity: 0.2; }
   50% { opacity: 1; }
