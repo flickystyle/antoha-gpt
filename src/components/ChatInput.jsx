@@ -96,7 +96,7 @@ const FakeButton = styled.button`
     border: none;
     background: none;
     cursor: pointer;
-    padding: 8px;
+    padding: 2px;
     margin-left: 8px;
     display: flex;
     align-items: center;
@@ -107,6 +107,11 @@ const FakeButton = styled.button`
         cursor: not-allowed;
         opacity: 0.3;
         color: var(--color-darkgray);
+    }
+
+    &:hover {
+        cursor: pointer;
+        color: var(--color-red);
     }
 `;
 
@@ -129,25 +134,25 @@ const Line = styled.div`
 function ChatInput() {
     const [inputValue, setInputValue] = useState('');
     const [isFocused, setIsFocused] = useState(false);
-    const [scrollbarRows, setScrollbarRows] = useState(1);
-    const textareaRef = useRef < HTMLTextAreaElement > null;
+    const [scrollbarRows, setScrollbarRows] = useState(0);
+    const textareaRef = useRef(null);
     const dispatch = useDispatch();
     const status = useSelector((state) => state.chat.status);
     const isDisabled = status === 'receiving';
 
     useEffect(() => {
-        if (textareaRef.current) {
-            textareaRef.current.style.height = 'auto';
-            textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
-        }
-    }, [inputValue, textareaRef]);
-
-    useEffect(() => {
-        if (inputValue.length > 78) {
-            setScrollbarRows(Math.floor(inputValue.length / 78));
-        } else {
-            setScrollbarRows(1);
-        }
+        const currentSymbols = Number(textareaRef.current.offsetWidth) / 9;
+        const newRows = inputValue.split('\n').reduce((acc, line) => {
+            console.log('len', line.length);
+            console.log({ currentSymbols });
+            if (line.length > currentSymbols) {
+                acc += Math.ceil(line.length / currentSymbols);
+            } else {
+                acc += 1;
+            }
+            return acc;
+        }, 0);
+        setScrollbarRows(newRows);
     }, [inputValue]);
 
     const handleSubmit = (e) => {
@@ -174,16 +179,21 @@ function ChatInput() {
                         onBlur={() => setIsFocused(false)}
                         placeholder="Задайте вопрос или напишите что-нибудь..."
                         rows={scrollbarRows}
+                        cols={5}
                     />
                     <Line />
                     <ButtonGroup>
                         <FakeButtonGroup>
                             <FakeButton disabled={isDisabled}>
-                                <FiMic size={20} />
+                                {!isDisabled ? (
+                                    <FiMic size={25} />
+                                ) : (
+                                    <FiMicOff size={25} />
+                                )}
                             </FakeButton>
 
                             <FakeButton type="file" disabled={isDisabled}>
-                                <FiPaperclip size={20} />
+                                <FiPaperclip size={25} />
                             </FakeButton>
                         </FakeButtonGroup>
 

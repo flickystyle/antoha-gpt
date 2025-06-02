@@ -24,22 +24,22 @@ const MessageContainer = styled.div`
     min-height: 20px;
 `;
 
-const TypewriterMessage = ({ text, speed = 30, onComplete }) => {
+const TypewriterMessage = ({ text, speed = 30, isUser }) => {
     const [displayedText, setDisplayedText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
 
     useEffect(() => {
-        if (currentIndex < text.length) {
-            const timeout = setTimeout(() => {
-                setDisplayedText((prev) => prev + text[currentIndex]);
-                setCurrentIndex((prev) => prev + 1);
-            }, speed);
+        if (!isUser) {
+            if (currentIndex < text.length) {
+                const timeout = setTimeout(() => {
+                    setDisplayedText((prev) => prev + text[currentIndex]);
+                    setCurrentIndex((prev) => prev + 1);
+                }, speed);
 
-            return () => clearTimeout(timeout);
-        } else if (onComplete) {
-            onComplete();
+                return () => clearTimeout(timeout);
+            }
         }
-    }, [currentIndex, text, speed, onComplete]);
+    }, [currentIndex, text, speed, isUser]);
 
     useEffect(() => {
         setDisplayedText('');
@@ -48,8 +48,8 @@ const TypewriterMessage = ({ text, speed = 30, onComplete }) => {
 
     return (
         <MessageContainer>
-            {displayedText}
-            {currentIndex < text.length && <Cursor />}
+            {!isUser ? displayedText : text}
+            {!isUser && currentIndex < text.length && <Cursor />}
         </MessageContainer>
     );
 };

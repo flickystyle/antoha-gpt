@@ -3,6 +3,7 @@ import { FiThumbsUp, FiThumbsDown, FiCopy } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import Spinner from '../ui/Spinner';
 import TypewriterMessage from '../ui/TypewriterMessage';
+import { useEffect, useRef } from 'react';
 
 const MessagesContainer = styled.div`
     display: flex;
@@ -15,8 +16,10 @@ const MessagesContainer = styled.div`
     margin: 0 auto;
     padding: 16px;
     box-sizing: border-box;
-    scrollbar-width: thin;
-    scrollbar-color: #8b000076 #f0f0f0;
+
+    &::-webkit-scrollbar {
+        width: 0;
+    }
 `;
 
 const MessageWrapper = styled.div`
@@ -25,9 +28,9 @@ const MessageWrapper = styled.div`
 `;
 
 const MessageBubble = styled.div`
-    max-width: 85%;
+    max-width: 65%;
     margin: 0 7rem;
-    padding: 20px;
+    padding: 1.2rem;
     border-radius: 16px;
     background: ${({ $isUser }) =>
         $isUser ? 'var(--color-gray)' : 'var(--color-white)'};
@@ -74,13 +77,13 @@ const BaseButton = styled.button`
 
 const RateButton = styled(BaseButton)`
     &:hover {
-        color: #cc0000;
+        color: var(--color-red);
     }
 `;
 
 const CopyButton = styled(BaseButton)`
     &:hover {
-        color: #8b0000e2;
+        color: var(--color-red);
     }
 `;
 
@@ -88,13 +91,26 @@ const ChatOutput = () => {
     const chat = useSelector((state) => state.chat);
     const { messages } = chat;
     const isLoading = chat.status === 'receiving';
+    const messagesEndRef = useRef(null);
+
+    const scrollToBottom = () => {
+        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+    };
+
+    useEffect(() => {
+        scrollToBottom();
+    }, [messages]);
 
     return (
         <MessagesContainer>
             {messages.map((message) => (
                 <MessageWrapper key={message.id} $isUser={message.isUser}>
                     <MessageBubble $isUser={message.isUser}>
-                        <TypewriterMessage text={message.text} speed={10} />
+                        <TypewriterMessage
+                            text={message.text}
+                            speed={10}
+                            isUser={message.isUser}
+                        />
                         {!message.isUser && (
                             <MessageFooter>
                                 <ActionButtons>
@@ -130,6 +146,7 @@ const ChatOutput = () => {
                     </MessageBubble>
                 </MessageWrapper>
             )}
+            <div ref={messagesEndRef} />
         </MessagesContainer>
     );
 };
