@@ -1,9 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 
 const initialState = {
-    messages: [{ id: 1, text: 'Привет! Я твой ассистент.', isUser: false }],
+    messages: [],
     status: 'idle', // 'idle' | 'sending' | 'receiving' | 'error'
     error: null,
+    startSession: true,
 };
 
 //'http://127.0.0.1:8080/api'
@@ -27,7 +28,7 @@ export const sendMessage = createAsyncThunk(
             }
 
             const data = await response.json();
-            
+
             return data.message;
         } catch (error) {
             return rejectWithValue(
@@ -47,6 +48,9 @@ const chatSlice = createSlice({
                 text: action.payload,
                 isUser: true,
             });
+        },
+        startSession: (state) => {
+            state.startSession = false;
         },
     },
     extraReducers: (builder) => {
@@ -75,5 +79,5 @@ const chatSlice = createSlice({
     },
 });
 
-export const { addUserMessage } = chatSlice.actions;
+export const { addUserMessage, startSession } = chatSlice.actions;
 export default chatSlice.reducer;

@@ -1,15 +1,21 @@
 import styled, { keyframes } from 'styled-components';
+import Logo from './Logo';
 
+const wave = keyframes`
+        0%, 30%, 60%, 100%, 130%, 300% {
+        transform: translateY(0);
+        opacity: 0.2;
+      }
 
-const blink = keyframes`
-  0%, 100% { opacity: 0.2; }
-  50% { opacity: 1; }
-`;
+      30% {
+        transform: translateY(-5px);
+        opacity: 1;
+      }`;
 
 const SpinnerContainer = styled.div`
     display: flex;
     align-items: center;
-    gap: 8px;
+    gap: 1rem;
     padding: 4px 0;
 `;
 
@@ -26,25 +32,19 @@ const Dot = styled.span`
     border-radius: 50%;
     background-color: #e8391a;
     margin: 0 2px;
-    animation: ${blink} 1.4s infinite both;
+    animation: ${wave} 1s infinite ease-in-out;
     animation-delay: ${(props) => props.delay};
-`;
-
-const SpinnerText = styled.span`
-    color: #666;
-    font-size: 14px;
-    margin-left: 8px;
 `;
 
 function Spinner() {
     return (
         <SpinnerContainer>
+            <Logo type="round" url="/logo.png" alt="NTS logo" />
             <TypingIndicator>
                 <Dot delay="0s" />
-                <Dot delay="0.2s" />
-                <Dot delay="0.4s" />
+                <Dot delay="0.3s" />
+                <Dot delay="0.6s" />
             </TypingIndicator>
-            <SpinnerText>Печатает...</SpinnerText>
         </SpinnerContainer>
     );
 }

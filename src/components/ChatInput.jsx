@@ -1,10 +1,9 @@
 import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import { addUserMessage, sendMessage } from '../slices/chatSlice';
-import { FiArrowUp, FiMic, FiPaperclip, FiMicOff } from 'react-icons/fi';
-import { RiSendPlaneFill } from 'react-icons/ri';
-import { GrSend } from "react-icons/gr";
+import { addUserMessage, sendMessage, startSession } from '../slices/chatSlice';
+import { FiMic, FiPaperclip } from 'react-icons/fi';
+import { GrSend } from 'react-icons/gr';
 
 const InputContainer = styled.div`
     max-width: 800px;
@@ -69,13 +68,17 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.6s;
+    transition: all 0.1s;
     position: relative;
     left: 8px;
 
+    &:active {
+        transform: scale(0.7);
+    }
+
     &:disabled {
         cursor: not-allowed;
-        opacity: 0.3;
+        opacity: 0.5;
         color: var(--color-darkgray);
     }
 `;
@@ -141,8 +144,6 @@ const FakeButton2 = styled.button`
     }
 `;
 
-
-
 const GreetingText = styled.p`
     text-align: center;
     font-size: 12px;
@@ -151,12 +152,13 @@ const GreetingText = styled.p`
 `;
 
 const Line = styled.div`
-    height: 1px;
+    height: 2px;
     width: 95%;
     padding: 0;
     margin: 0;
     line-height: 0;
-    background-color: #838282;
+    background-color: var(--color-darkgray);
+    opacity: 0.4;
 `;
 
 function ChatInput() {
@@ -171,8 +173,6 @@ function ChatInput() {
     useEffect(() => {
         const currentSymbols = Number(textareaRef.current.offsetWidth) / 9;
         const newRows = inputValue.split('\n').reduce((acc, line) => {
-            console.log('len', line.length);
-            console.log({ currentSymbols });
             if (line.length > currentSymbols) {
                 acc += Math.ceil(line.length / currentSymbols);
             } else {
@@ -188,15 +188,12 @@ function ChatInput() {
         if (!inputValue.trim()) return;
         dispatch(addUserMessage(inputValue));
         dispatch(sendMessage(inputValue));
+        dispatch(startSession());
         setInputValue('');
     };
 
     return (
         <InputContainer>
-            <GreetingText>
-                ИИ Ассистент может допускать ошибки. Проверяйте важную
-                информацию.
-            </GreetingText>
             <Form onSubmit={handleSubmit}>
                 <InputWrapper $focused={isFocused}>
                     <StyledTextarea
@@ -205,7 +202,7 @@ function ChatInput() {
                         onChange={(e) => setInputValue(e.target.value)}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
-                        placeholder="Задайте вопрос или напишите что-нибудь..."
+                        placeholder="Задайте ваш вопрос..."
                         rows={scrollbarRows}
                         cols={5}
                     />
@@ -222,7 +219,7 @@ function ChatInput() {
                         </FakeButtonGroup>
 
                         <Button type="submit" disabled={!inputValue.trim()}>
-                            <GrSend size={33} />
+                            <GrSend size={31} />
                         </Button>
                     </ButtonGroup>
                 </InputWrapper>

@@ -1,5 +1,6 @@
 import ChatInput from './ChatInput';
 import ChatOutput from './ChatOutput';
+import GreetingElement from './GreetingElement';
 import MainWindow from './MainWindow';
 
 function Chat() {
@@ -7,6 +8,7 @@ function Chat() {
         <>
             <MainWindow>
                 <ChatOutput />
+                <GreetingElement />
                 <ChatInput />
             </MainWindow>
         </>

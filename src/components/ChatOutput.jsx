@@ -1,9 +1,15 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { FiThumbsUp, FiThumbsDown, FiCopy } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import Spinner from '../ui/Spinner';
 import TypewriterMessage from '../ui/TypewriterMessage';
 import { useEffect, useRef } from 'react';
+import Logo from '../ui/Logo';
+
+const ani = keyframes`
+  0% {opacity: 0;}
+  100% {opacity: 1;}
+`;
 
 const MessagesContainer = styled.div`
     display: flex;
@@ -16,6 +22,8 @@ const MessagesContainer = styled.div`
     margin: 0 auto;
     padding: 16px;
     box-sizing: border-box;
+    opacity: 0;
+    animation: ${ani} 2.5s forwards;
 
     &::-webkit-scrollbar {
         width: 0;
@@ -23,6 +31,8 @@ const MessagesContainer = styled.div`
 `;
 
 const MessageWrapper = styled.div`
+    opacity: 0;
+    animation: ${ani} 1s forwards;
     display: flex;
     justify-content: ${({ $isUser }) => ($isUser ? 'flex-end' : 'flex-start')};
 `;
@@ -31,9 +41,9 @@ const MessageBubble = styled.div`
     max-width: 65%;
     margin: 0 7rem;
     padding: 1.2rem;
-    border-radius: 16px;
+    border-radius: 25px;
     background: ${({ $isUser }) =>
-        $isUser ? 'var(--color-gray)' : 'var(--color-white)'};
+        $isUser ? 'var(--color-lightgray)' : 'var(--color-white)'};
     border: ${({ $isUser }) =>
         $isUser ? '1px solid #e0e0e0' : '1px solid #e0e0e0'};
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
@@ -48,8 +58,11 @@ const MessageFooter = styled.div`
     color: #888;
 `;
 
-const Timestamp = styled.span`
-    opacity: 0.7;
+const MainMessage = styled.div`
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    opacity: 0.9;
 `;
 
 const ActionButtons = styled.div`
@@ -106,11 +119,30 @@ const ChatOutput = () => {
             {messages.map((message) => (
                 <MessageWrapper key={message.id} $isUser={message.isUser}>
                     <MessageBubble $isUser={message.isUser}>
-                        <TypewriterMessage
-                            text={message.text}
-                            speed={10}
-                            isUser={message.isUser}
-                        />
+                        <MainMessage>
+                            {!message.isUser ? (
+                                <>
+                                    <Logo type="round" url="/logo.png" />
+                                    <TypewriterMessage
+                                        text={message.text}
+                                        speed={10}
+                                        isUser={message.isUser}
+                                    />
+                                </>
+                            ) : (
+                                <>
+                                    <TypewriterMessage
+                                        text={message.text}
+                                        speed={10}
+                                        isUser={message.isUser}
+                                    />
+                                    <Logo
+                                        type="round"
+                                        url="/nofaceavatar.png"
+                                    />
+                                </>
+                            )}
+                        </MainMessage>
                         {!message.isUser && (
                             <MessageFooter>
                                 <ActionButtons>
