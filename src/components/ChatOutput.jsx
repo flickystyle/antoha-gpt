@@ -29,7 +29,8 @@ const MessageBubble = styled.div`
     margin: 0 7rem;
     padding: 20px;
     border-radius: 16px;
-    background: ${({ $isUser }) => ($isUser ? '#E0E0E0' : '#f9f9f9')};
+    background: ${({ $isUser }) =>
+        $isUser ? 'var(--color-gray)' : 'var(--color-white)'};
     border: ${({ $isUser }) =>
         $isUser ? '1px solid #e0e0e0' : '1px solid #e0e0e0'};
     box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);

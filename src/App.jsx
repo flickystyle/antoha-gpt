@@ -1,5 +1,5 @@
 import Chat from './components/Chat';
-import GlobalStyles from './components/GlobalStyles';
+import GlobalStyles from './styles/GlobalStyles';
 import { store } from './store/store';
 import { Provider } from 'react-redux';
 

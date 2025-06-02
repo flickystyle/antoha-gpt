@@ -1,13 +1,13 @@
 import { useState, useRef, useEffect } from 'react';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { addUserMessage, sendMessage } from '../slices/chatSlice';
-import { HiArrowSmallUp } from 'react-icons/hi2';
+import { FiArrowUp, FiMic, FiPaperclip, FiMicOff } from 'react-icons/fi';
 
 const InputContainer = styled.div`
     max-width: 800px;
     width: 100%;
-    margin: 0 auto;
+    margin: auto;
     padding: 16px;
     box-sizing: border-box;
 `;
@@ -18,25 +18,25 @@ const Form = styled.form`
 
 const InputWrapper = styled.div`
     display: flex;
+    gap: 0.3rem;
+    flex-direction: column;
     align-items: center;
     border-radius: 16px;
-    border: 2px solid #e0e0e0;
-    background-color: #f9f9f9;
+    border: 1px solid #e0e0e0;
+    background-color: rgb(198, 199, 205);
     padding: 8px 16px;
     transition: all 0.2s ease;
     box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
 
     &:focus-within {
-        border-color: #cc0000;
-    }
-    &:hover {
-        border-color: #cc0000;
+        border-color: rgb(49, 51, 64);
     }
 `;
 
-const StyledInput = styled.input`
+const StyledTextarea = styled.textarea`
     flex: 1;
     border: none;
+    border-bottom: 1px solid var(--dark-gray);
     background: transparent;
     resize: none;
     outline: none;
@@ -44,17 +44,29 @@ const StyledInput = styled.input`
     line-height: 1.5;
     padding: 8px 0;
     max-height: 200px;
+    width: 95%;
     font-family: inherit;
 
     &::placeholder {
-        color: #9e9e9e;
+        color: #838282;
+        position: absolute;
+        left: 1rem;
     }
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+`;
+const ButtonGroup = styled.div`
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
 `;
 
 const Button = styled.button`
-    background: none;
-    border: 1px solid #cc0000;
-    color: #cc0000;
+    background-color: var(--color-red);
+    border: 1px solid var(--color-white);
+    color: var(--color-white);
     border-radius: 50%;
     cursor: pointer;
     padding: 8px;
@@ -62,27 +74,66 @@ const Button = styled.button`
     display: flex;
     align-items: center;
     justify-content: center;
+    transition: all 0.6s;
 
     &:disabled {
         cursor: not-allowed;
-        opacity: 0.5;
-        border: 1px solid gray;
-        color: gray;
+        opacity: 0.3;
+        border: 1px solid var(--color-red);
+        color: var(--color-red);
+        background-color: var(--color-white);
     }
 `;
 
-const FooterText = styled.p`
+const FakeButtonGroup = styled.div`
+    padding: 0;
+    margin: 0;
+    display: flex;
+`;
+
+const FakeButton = styled.button`
+    color: var(--color-darkgray);
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 8px;
+    margin-left: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.6s;
+
+    &:disabled {
+        cursor: not-allowed;
+        opacity: 0.3;
+        color: var(--color-darkgray);
+    }
+`;
+
+const GreetingText = styled.p`
     text-align: center;
     font-size: 12px;
     color: #9e9e9e;
     margin-top: 12px;
 `;
 
+const Line = styled.div`
+    height: 1px;
+    width: 95%;
+    padding: 0;
+    margin: 0;
+    line-height: 0;
+    background-color: #838282;
+`;
+
 function ChatInput() {
     const [inputValue, setInputValue] = useState('');
     const [isFocused, setIsFocused] = useState(false);
+    const [scrollbarRows, setScrollbarRows] = useState(1);
     const textareaRef = useRef < HTMLTextAreaElement > null;
     const dispatch = useDispatch();
+    const status = useSelector((state) => state.chat.status);
+    const isDisabled = status === 'receiving';
 
     useEffect(() => {
         if (textareaRef.current) {
@@ -90,6 +141,14 @@ function ChatInput() {
             textareaRef.current.style.height = `${textareaRef.current.scrollHeight}px`;
         }
     }, [inputValue, textareaRef]);
+
+    useEffect(() => {
+        if (inputValue.length > 78) {
+            setScrollbarRows(Math.floor(inputValue.length / 78));
+        } else {
+            setScrollbarRows(1);
+        }
+    }, [inputValue]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -101,25 +160,39 @@ function ChatInput() {
 
     return (
         <InputContainer>
+            <GreetingText>
+                ИИ Ассистент может допускать ошибки. Проверяйте важную
+                информацию.
+            </GreetingText>
             <Form onSubmit={handleSubmit}>
                 <InputWrapper $focused={isFocused}>
-                    <StyledInput
+                    <StyledTextarea
                         ref={textareaRef}
                         value={inputValue}
                         onChange={(e) => setInputValue(e.target.value)}
                         onFocus={() => setIsFocused(true)}
                         onBlur={() => setIsFocused(false)}
                         placeholder="Задайте вопрос или напишите что-нибудь..."
-                        rows={1}
+                        rows={scrollbarRows}
                     />
-                    <Button type="submit" disabled={!inputValue.trim()}>
-                        <HiArrowSmallUp size={20} />
-                    </Button>
+                    <Line />
+                    <ButtonGroup>
+                        <FakeButtonGroup>
+                            <FakeButton disabled={isDisabled}>
+                                <FiMic size={20} />
+                            </FakeButton>
+
+                            <FakeButton type="file" disabled={isDisabled}>
+                                <FiPaperclip size={20} />
+                            </FakeButton>
+                        </FakeButtonGroup>
+
+                        <Button type="submit" disabled={!inputValue.trim()}>
+                            <FiArrowUp size={20} />
+                        </Button>
+                    </ButtonGroup>
                 </InputWrapper>
             </Form>
-            <FooterText>
-                AntohaGPT может допускать ошибки. Проверяйте важную информацию.
-            </FooterText>
         </InputContainer>
     );
 }
