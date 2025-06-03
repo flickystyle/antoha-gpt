@@ -39,7 +39,6 @@ export const sendMessage = createAsyncThunk(
     }
 );
 
-const txt = `10 In VS Code if I type "lorem" and then press enter it will generate a paragraph of lorem ipsum. The only problem is that the paragraph comes out as one very long line of text as opposed to several lines in the text editor. Is there a setting I can change so that it automatically generates my lorem ipsum on multiple lines?`;
 const chatSlice = createSlice({
     name: 'chat',
     initialState,
@@ -76,7 +75,7 @@ const chatSlice = createSlice({
                 state.messages.push({
                     id: Date.now(),
                     // text: 'Ошибка' + action.payload,
-                    text: txt + txt + txt + action.payload,
+                    text: 'Ошибка' + action.payload,
 
                     isUser: false,
                 });
