@@ -74,7 +74,7 @@ const chatSlice = createSlice({
                 state.error = action.payload;
                 state.messages.push({
                     id: Date.now(),
-                    // text: 'Ошибка' + action.payload,
+
                     text: 'Ошибка' + action.payload,
 
                     isUser: false,

@@ -2,17 +2,10 @@ import styled from 'styled-components';
 
 const Window = styled.div`
     display: grid;
-    grid-template-columns: 1fr;
-    grid-template-rows: 5fr 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
-
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
-    margin: 15px;
+    grid-template-rows: 1fr auto auto; 
     height: 95vh;
-    border-radius: 1%;
+    gap: 5px;
+    padding: 15px;
 `;
 
 function MainWindow({ children }) {

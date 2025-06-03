@@ -3,7 +3,7 @@ import { FiThumbsUp, FiThumbsDown, FiCopy } from 'react-icons/fi';
 import { useSelector } from 'react-redux';
 import Spinner from '../ui/Spinner';
 import TypewriterMessage from '../ui/TypewriterMessage';
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Logo from '../ui/Logo';
 
 const ani = keyframes`

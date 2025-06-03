@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 
 const ani = keyframes`
   0% {opacity: 0;}
-  100% {opacity: 1;}
+  100% {opacity: 0.8;}
 `;
 
 const backAni = keyframes`
-  0% {opacity: 1;}
+  0% {opacity: 0.8;}
   100% {opacity: 0;}
 `;
 
@@ -31,7 +31,7 @@ const Container = styled.div`
     }
 
     &.hidden {
-        opacity: 1;
+        opacity: 0.8;
         animation: ${backAni} 1s forwards;
     }
 `;
@@ -58,7 +58,10 @@ const P = styled.p`
 const A = styled.a`
     text-decoration: none;
     color: var(--color-red);
+    font-weight: 600;
 `;
+
+
 function GreetingElement() {
     const chat = useSelector((state) => state.chat);
     console.log(chat);
