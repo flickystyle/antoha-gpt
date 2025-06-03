@@ -61,7 +61,6 @@ const A = styled.a`
     font-weight: 600;
 `;
 
-
 function GreetingElement() {
     const chat = useSelector((state) => state.chat);
     console.log(chat);
@@ -86,8 +85,8 @@ function GreetingElement() {
                     <A href="#">правилами использования ассистента</A>.
                 </P>
                 <P>
-                    Помните, ассистент может быть не точен, проверяйте
-                    информацию если хотите использовать ее в своих задачах.
+                    Ответы ассистента могут содержать неточности, поэтому
+                    советуем перепроверять информацию перед применением.
                 </P>
             </TextWrapper>
         </Container>

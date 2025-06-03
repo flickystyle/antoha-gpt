@@ -2,7 +2,7 @@ import { useState, useRef, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { addUserMessage, sendMessage, startSession } from '../slices/chatSlice';
-import { FiMic, FiPaperclip } from 'react-icons/fi';
+import { FiMic, FiPaperclip, FiArrowUp } from 'react-icons/fi';
 import { GrSend } from 'react-icons/gr';
 
 const InputContainer = styled.div`
@@ -57,21 +57,23 @@ const ButtonGroup = styled.div`
     display: flex;
     justify-content: space-between;
     width: 95%;
+    min-height: 2.2rem;
 `;
 
 const Button = styled.button`
-    color: var(--color-red);
-    background: none;
-    border: none;
+    color: var(--color-white);
+    border: 3px solid var(--color-red);
+    border-radius: 50%;
+    background-color: var(--color-red);
     cursor: pointer;
-    padding: 8px;
+    padding: 4px;
     margin-left: 8px;
     display: flex;
     align-items: center;
     justify-content: center;
-    transition: all 0.1s;
+    transition: all 0.3s;
     position: relative;
-    left: 8px;
+    left: 1px;
 
     &:active {
         transform: scale(0.7);
@@ -80,7 +82,9 @@ const Button = styled.button`
     &:disabled {
         cursor: not-allowed;
         opacity: 0.5;
-        color: var(--color-darkgray);
+        color: var(--color-white);
+        background-color: var(--color-darkgray);
+        border-color: var(--color-darkgray);
     }
 `;
 
@@ -130,7 +134,6 @@ const FakeButton2 = styled.button`
     justify-content: center;
     transition: all 0.6s;
     position: relative;
-    /* left: 10px; */
     transform: rotate(0.88turn);
 
     &:disabled {
@@ -143,13 +146,6 @@ const FakeButton2 = styled.button`
         cursor: pointer;
         color: var(--color-red);
     }
-`;
-
-const GreetingText = styled.p`
-    text-align: center;
-    font-size: 12px;
-    color: #9e9e9e;
-    margin-top: 12px;
 `;
 
 const Line = styled.div`
@@ -219,8 +215,11 @@ function ChatInput() {
                             </FakeButton2>
                         </FakeButtonGroup>
 
-                        <Button type="submit" disabled={!inputValue.trim()}>
-                            <GrSend size={31} />
+                        <Button
+                            type="submit"
+                            disabled={!inputValue.trim() || isDisabled}
+                        >
+                            <FiArrowUp size={22} />
                         </Button>
                     </ButtonGroup>
                 </InputWrapper>
