@@ -4,11 +4,11 @@ import { useSelector } from 'react-redux';
 
 const ani = keyframes`
   0% {opacity: 0;}
-  100% {opacity: 0.8;}
+  100% {opacity: 0.9;}
 `;
 
 const backAni = keyframes`
-  0% {opacity: 0.8;}
+  0% {opacity: 0.9;}
   100% {opacity: 0;}
 `;
 

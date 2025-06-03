@@ -6,7 +6,8 @@ const GlobalStyles = createGlobalStyle`
     --color-gray: rgb(198, 199, 205);
     --color-red: rgb(209, 46, 69);
     --color-darkgray: rgb(49, 51, 64);
-    --color-lightgray: rgb(209, 210, 216)
+    --color-lightgray: rgb(209, 210, 216);
+    --color-logo: rgb(203, 73, 68);
 }
 
 
