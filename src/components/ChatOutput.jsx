@@ -22,7 +22,7 @@ const MessagesContainer = styled.div`
     margin: 0 auto;
     padding: 16px;
     box-sizing: border-box;
-    
+
     &::-webkit-scrollbar {
         width: 0;
     }
@@ -105,14 +105,9 @@ const ChatOutput = () => {
     const isLoading = chat.status === 'receiving';
     const messagesEndRef = useRef(null);
 
-    const scrollToBottom = () => {
+    const handleComplete = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     };
-
-    useEffect(() => {
-        scrollToBottom();
-    }, [messages]);
-
     return (
         <MessagesContainer>
             {messages.map((message) => (
@@ -130,6 +125,8 @@ const ChatOutput = () => {
                                         text={message.text}
                                         speed={10}
                                         isUser={message.isUser}
+                                        onComplete={handleComplete}
+                                        scrollRef={messagesEndRef}
                                     />
                                 </>
                             ) : (
@@ -138,6 +135,8 @@ const ChatOutput = () => {
                                         text={message.text}
                                         speed={10}
                                         isUser={message.isUser}
+                                        scrollRef={messagesEndRef}
+                                        onComplete={handleComplete}
                                     />
                                     <Logo
                                         type="round"

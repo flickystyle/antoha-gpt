@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import styled, { keyframes } from 'styled-components';
 
 const blink = keyframes`
@@ -24,22 +24,39 @@ const MessageContainer = styled.div`
     min-height: 20px;
 `;
 
-const TypewriterMessage = ({ text, speed = 30, isUser }) => {
+const TypewriterMessage = ({
+    text,
+    speed = 20,
+    isUser,
+    onComplete,
+    scrollRef,
+}) => {
     const [displayedText, setDisplayedText] = useState('');
     const [currentIndex, setCurrentIndex] = useState(0);
 
-    useEffect(() => {
-        if (!isUser) {
-            if (currentIndex < text.length) {
-                const timeout = setTimeout(() => {
-                    setDisplayedText((prev) => prev + text[currentIndex]);
-                    setCurrentIndex((prev) => prev + 1);
-                }, speed);
-
-                return () => clearTimeout(timeout);
-            }
+    const scrollToBottom = useCallback(() => {
+        if (scrollRef?.current) {
+            scrollRef.current.scrollIntoView({ behavior: 'smooth' });
         }
-    }, [currentIndex, text, speed, isUser]);
+    }, [scrollRef]);
+
+    useEffect(() => {
+        if (!isUser && currentIndex < text.length) {
+            const timeout = setTimeout(() => {
+                setDisplayedText((prev) => prev + text[currentIndex]);
+                setCurrentIndex((prev) => prev + 1);
+                scrollToBottom();
+            }, speed);
+
+            return () => clearTimeout(timeout);
+        }
+    }, [currentIndex, text, speed, isUser, scrollToBottom]);
+
+    useEffect(() => {
+        if (!isUser && currentIndex === text.length && onComplete) {
+            onComplete();
+        }
+    }, [currentIndex, text.length, isUser, onComplete]);
 
     useEffect(() => {
         setDisplayedText('');
