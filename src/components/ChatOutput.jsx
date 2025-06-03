@@ -22,9 +22,7 @@ const MessagesContainer = styled.div`
     margin: 0 auto;
     padding: 16px;
     box-sizing: border-box;
-    opacity: 0;
-    animation: ${ani} 2.5s forwards;
-
+    
     &::-webkit-scrollbar {
         width: 0;
     }
@@ -34,6 +32,7 @@ const MessageWrapper = styled.div`
     opacity: 0;
     animation: ${ani} 1s forwards;
     display: flex;
+
     justify-content: ${({ $isUser }) => ($isUser ? 'flex-end' : 'flex-start')};
 `;
 
@@ -122,7 +121,11 @@ const ChatOutput = () => {
                         <MainMessage>
                             {!message.isUser ? (
                                 <>
-                                    <Logo type="round" url="/logo.png" />
+                                    <Logo
+                                        type="round"
+                                        url="/logo.png"
+                                        position="start"
+                                    />
                                     <TypewriterMessage
                                         text={message.text}
                                         speed={10}
@@ -139,6 +142,7 @@ const ChatOutput = () => {
                                     <Logo
                                         type="round"
                                         url="/nofaceavatar.png"
+                                        position="start"
                                     />
                                 </>
                             )}

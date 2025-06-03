@@ -10,14 +10,25 @@ const sizes = {
         height: 3.8rem;
     `,
 };
-const LogoWrapper = styled.div``;
+
+const positions = {
+    start: css`
+        align-self: flex-start;
+    `,
+    center: css`
+        align-self: center;
+    `,
+};
+const LogoWrapper = styled.div`
+    ${(props) => positions[props.position]}
+`;
 const Img = styled.img`
     ${(props) => sizes[props.type]}
 `;
 
-function Logo({ type, url, alt }) {
+function Logo({ type, url, alt, position }) {
     return (
-        <LogoWrapper>
+        <LogoWrapper position={position}>
             <Img src={url} alt={alt} type={type} />
         </LogoWrapper>
     );

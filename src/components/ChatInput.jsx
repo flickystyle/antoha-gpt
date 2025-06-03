@@ -11,6 +11,7 @@ const InputContainer = styled.div`
     margin: auto;
     padding: 16px;
     box-sizing: border-box;
+    z-index: 999;
 `;
 
 const Form = styled.form`
