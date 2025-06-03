@@ -30,7 +30,7 @@ const Dot = styled.span`
     width: 8px;
     height: 8px;
     border-radius: 50%;
-    background-color: #e8391a;
+    background-color: var(--color-red);
     margin: 0 2px;
     animation: ${wave} 1s infinite ease-in-out;
     animation-delay: ${(props) => props.delay};
